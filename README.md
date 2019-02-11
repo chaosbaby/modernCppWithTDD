@@ -15,3 +15,8 @@ bootstrap-vcpkg.bat
 ```bash
 vcpkg install gtest
 ```
+
+## jsoncpp를 설치한다.
+```bash
+vcpkg install jsoncpp
+```
