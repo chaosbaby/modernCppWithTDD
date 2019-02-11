@@ -10,3 +10,8 @@ git clone https://github.com/Microsoft/vcpkg.git
 cd vcpkg
 bootstrap-vcpkg.bat
 ```
+
+## gtest를 설치한다.
+```bash
+vcpkg install gtest
+```
