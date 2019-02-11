@@ -16,6 +16,11 @@ bootstrap-vcpkg.bat
 vcpkg install gtest
 ```
 
+## libcurl을 설치한다.
+```bash
+vcpkg install curl
+```
+
 ## jsoncpp를 설치한다.
 ```bash
 vcpkg install jsoncpp
