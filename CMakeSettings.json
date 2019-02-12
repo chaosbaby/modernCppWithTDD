@@ -16,6 +16,10 @@
         {
           "name": "CMAKE_TOOLCHAIN_FILE",
           "value": "${env.VCPKG_HOME}\\scripts\\buildsystems\\vcpkg.cmake"
+        },
+        {
+          "name": "GMOCK_ROOT",
+          "value": "${env.VCPKG_HOME}\\installed\\x86-windows"
         }
       ]
     }
