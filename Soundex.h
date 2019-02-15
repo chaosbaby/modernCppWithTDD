@@ -4,39 +4,52 @@
 #include <string>
 #include <unordered_map>
 #include <cctype>
+#include "StringUtil.h"
+#include "CharUtil.h"
 
 class Soundex {
 public:
 	static const size_t MaxCodeLength{ 4 };
 
 	std::string encode(const std::string& word) const {
-		return zeroPad(upperFront(head(word)) + tail(encodedDigits(word)));
+		return stringutil::zeroPad(stringutil::upperFront(stringutil::head(word)) + stringutil::tail(encodedDigits(word)),
+			MaxCodeLength);
 	}
 	   
 private:
-	std::string head(const std::string & word) const {
-		return word.substr(0, 1);
-	}
 
-	std::string tail(const std::string &word) const {
-		return word.substr(1);
-	}
 
 	const std::string NotADigit{ "*" };
 
 	std::string encodedDigits(const std::string & word) const
 	{
 		std::string encoding;
-		encoding += encodedDigit(word.front());
+		encodeHead(encoding, word);
 
-		for (auto letter : tail(word)) {
-			if (isComplete(encoding)) break;
-
-			auto digit = encodedDigit(letter);
-			if (digit != NotADigit && digit != lastDigit(encoding))
-				encoding += digit;
-		}
+		encodeTail(encoding, word);
 		return encoding;
+	}
+
+	void encodeTail(std::string &encoding, const std::string & word) const
+	{
+		for (auto i = 1u; i < word.length(); i++) 
+		{
+			if (!isComplete(encoding))
+				encodeLetter(encoding, word[i], word[i-1]);
+		}
+	}
+
+	void encodeLetter(std::string & encoding, char letter, char lastLetter) const
+	{
+		auto digit = encodedDigit(letter);
+		if (digit != NotADigit && 
+			(digit != lastDigit(encoding) || charutil::isVowel(lastLetter)))
+			encoding += digit;
+	}
+
+	void encodeHead(std::string &encoding, const std::string & word) const
+	{
+		encoding += encodedDigit(word.front());
 	}
 
 	std::string lastDigit(const std::string& encoding) const {
@@ -61,24 +74,10 @@ public:
 			{'r', "6"}
 		};
 		
-		auto it = encodings.find(lower(letter));
+		auto it = encodings.find(charutil::lower(letter));
 		return it == encodings.end() ? NotADigit : it->second;
-	}
-	   
-private:
-	char lower(char c) const {
-		return std::tolower(static_cast<unsigned char>(c));
-	}
+	} 
 
-	std::string zeroPad(const std::string & word) const {
-		auto zerosNeeded = MaxCodeLength - word.length();
-		return word + std::string(zerosNeeded, '0');
-	}
-
-	std::string upperFront(const std::string& string) const {
-		return std::string(1, 
-			std::toupper(static_cast<unsigned char>(string.front())));
-	}
 };
 
 #endif	//Soundex_h

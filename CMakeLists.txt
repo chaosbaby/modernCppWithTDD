@@ -6,10 +6,15 @@ include(FindGMock)
 
 set(sources	
 	main.cpp
-	SoundexTest.cpp
+	CharUtil.cpp
+	StringUtil.cpp
 	)
+set(testSources
+	CharUtilTest.cpp
+	SoundexTest.cpp
+	StringUtilTest.cpp)
 
-add_executable(test ${sources})
+add_executable(test ${testSources} ${sources})
 target_compile_definitions( test PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY=1 )
 
 find_package(GMock REQUIRED GMock::GMock GMock::Main)
